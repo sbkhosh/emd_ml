@@ -1,13 +1,10 @@
 #!/usr/bin/python3
 
-import backtrader as bt
-import numpy as np
 import os
 import pandas as pd
 import yaml
 
 from dt_help import Helper
-from pandas.tseries.offsets import BDay
 from yahoofinancials import YahooFinancials
 
 class DataProcessor():
@@ -34,15 +31,11 @@ class DataProcessor():
 
     @Helper.timing
     def process(self):
-        start_date = self.start_date
-        end_date = self.end_date
-        ticker = self.ticker
-        
-        self.values = DataProcessor.load_data(start_date,end_date,ticker)
+        self.values = DataProcessor.load_data(self.start_date,self.end_date,self.ticker)
 
     @Helper.timing
     def load_data(start_date,end_date,ticker):
-        date_range = pd.bdate_range(start=start_date,end=(pd.to_datetime(end_date).date() + BDay(-1)).strftime('%Y-%m-%d'))
+        date_range = pd.bdate_range(start=start_date,end=end_date)
         values = pd.DataFrame({'Dates': date_range})
         values['Dates']= pd.to_datetime(values['Dates'])
 
@@ -60,3 +53,22 @@ class DataProcessor():
         values[cols] = values[cols].apply(pd.to_numeric,errors='coerce').round(decimals=3)
         values.set_index('Dates',inplace=True)
         return(values)
+    def view_data(self):
+        print(self.data.head())
+        
+    def drop_cols(self,col_names): 
+        self.data.drop(col_names, axis=1, inplace=True)
+        return(self)
+               
+    def write_to(self,name,flag):
+        filename = os.path.join(self.output_directory,name)
+        try:
+            if('csv' in flag):
+                self.data.to_csv(str(name)+'.csv')
+            elif('xls' in flag):
+                self.data.to_excel(str(name)+'xls')
+        except:
+            raise ValueError("not supported format")
+               
+    def save(self):
+        pass

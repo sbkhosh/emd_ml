@@ -1,3 +1,34 @@
 ticker: 'TSLA'
-start_date: '2015-06-05'
-end_date: '2020-06-05'
+yvar: 'raw'
+start_date: '2015-07-15'
+end_date: '2020-07-15'
+mapping: {'Linear Regression':              'lr',
+          'Lasso Regression':               'lasso',
+          'Ridge Regression':               'ridge',
+          'Elastic Net':                    'en',
+          'Least Angle Regression':         'lar',
+          'Lasso Least Angle Regression':   'llar',
+          'Orthogonal Matching Pursuit':    'omp',
+          'Bayesian Ridge':                 'br',
+          'Automatic Relevance Determ.':    'ard',
+          'Passive Aggressive Regressor':   'par',
+          'Random Sample Consensus':        'ransac',
+          'TheilSen Regressor':             'tr',
+          'Huber Regressor':                'huber',
+          'Kernel Ridge':                   'kr',
+          'Support Vector Machine':         'svm',
+          'K Neighbors Regressor':          'knn',
+          'Decision Tree':                  'dt',
+          'Random Forest':                  'rf',
+          'Extra Trees Regressor':          'et',
+          'AdaBoost Regressor':             'ada',
+          'Gradient Boosting Regressor':    'gbr',
+          'Multi Level Perceptron':         'mlp',
+          'Extreme Gradient Boosting':      'xgboost',
+          'Light Gradient Boosting':        'lightgbm',
+          'CatBoost Regressor':             'catboost'}
+num_selected_models: 3
+
+
+
+

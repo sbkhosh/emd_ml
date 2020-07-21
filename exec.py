@@ -12,7 +12,7 @@ import yaml
 
 from datetime import datetime, timedelta
 from dt_help import Helper
-from dt_model import EMDAnalysis
+from dt_model import EmdML
 from dt_read import DataProcessor
 from pandas.plotting import register_matplotlib_converters
 
@@ -36,7 +36,32 @@ if __name__ == '__main__':
     obj_reader.read_prm()   
     obj_reader.process()
 
-    obj_emd = EMDAnalysis(data = obj_reader.values)
-    obj_emd.get_vars()
-    obj_emd.get_imfs_hilbert_ts()
-    print(obj_emd.imfs)
+    obj_emdml = EmdML(data=obj_reader.values,
+                      yvar=obj_reader.conf.get('yvar'),
+                      mpg=obj_reader.conf.get('mapping'),
+                      num_selected_models=obj_reader.conf.get('num_selected_models'))
+
+    # obj_emdml.get_feat_lag()
+    obj_emdml.get_imfs_hilbert_ts()
+    obj_emdml.get_target()
+    obj_emdml.process_all()
+
+    # regression modeling
+    obj_emdml.regr_models()
+    
+    # tuning best three models
+    obj_emdml.get_best_models()
+
+    # tune/bagging best models
+    obj_emdml.bagg_tune_best_model()
+
+    # stacking models
+    obj_emdml.stacking_model()
+
+    # saving model
+    obj_emdml.save_model()
+
+    # predicting model
+    obj_emdml.predict()
+
+    

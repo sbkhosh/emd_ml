@@ -3,6 +3,7 @@
 import csv
 import inspect
 import os
+import pandas as pd
 import time
 import yaml
 
@@ -40,7 +41,7 @@ class Helper():
             print('function:%r took: %2.2f sec' % (f.__name__,  end - start))
             return(result)
         return wrapper
-   
+
     @staticmethod
     def get_delim(filename):
         with open(filename, 'r') as csvfile:
@@ -55,3 +56,9 @@ class Helper():
     @staticmethod
     def check_missing_data(data):
         print(data.isnull().sum().sort_values(ascending=False))
+
+    @staticmethod
+    def get_all_features(data_0,data_1):
+        data_0['Dates'] = pd.to_datetime(data_0['Dates'],format='%Y-%b-%d')
+        data_0 = pd.merge(left=data_0,right=data_1,how='left',on='Dates')
+        return(data_0)
